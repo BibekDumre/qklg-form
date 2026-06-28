@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QKLG Learning Profile</title>
+<style>
+  :root{
+    --cream:#FBF6EC;
+    --ink:#2B2A28;
+    --line:#D8CFC0;
+    --amber:#E8B25C;
+    --amber-soft:#FBE6C2;
+    --teal:#3E8E8B;
+    --teal-soft:#D5ECEA;
+    --moss:#5F8D52;
+    --moss-soft:#DEEAD7;
+    --paper:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    padding:28px 16px 80px;
+  }
+  .page-head{
+    max-width:1000px;
+    margin:0 auto 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .page-head h1{
+    font-size:1.5rem;
+    margin:0 0 4px;
+    letter-spacing:.2px;
+  }
+  .page-head p{
+    margin:0;
+    font-size:.85rem;
+    color:#6b6459;
+  }
+  .toolbar{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  button.tool{
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    padding:9px 14px;
+    border-radius:8px;
+    font-size:.85rem;
+    cursor:pointer;
+    transition:background .15s, transform .1s;
+  }
+  button.tool:hover{background:var(--amber-soft); border-color:var(--amber);}
+  button.tool:active{transform:scale(.97);}
+
+  .child-block{
+    max-width:1000px;
+    margin:0 auto 36px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 22px 12px;
+    position:relative;
+    box-shadow:0 1px 2px rgba(0,0,0,.04);
+  }
+  .remove-btn{
+    position:absolute;
+    top:14px;
+    right:14px;
+    border:none;
+    background:transparent;
+    color:#a99c8a;
+    font-size:1.1rem;
+    cursor:pointer;
+    line-height:1;
+    padding:4px 8px;
+    border-radius:6px;
+  }
+  .remove-btn:hover{background:#f3e9d8; color:#b8543f;}
+
+  .name-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+  }
+  .name-row label{
+    font-weight:600;
+    font-size:1.05rem;
+  }
+  .name-row input{
+    flex:1;
+    min-width:180px;
+    border:none;
+    border-bottom:2px solid var(--line);
+    background:transparent;
+    font-size:1.05rem;
+    padding:4px 2px;
+    font-family:inherit;
+    color:var(--ink);
+  }
+  .name-row input:focus{outline:none; border-bottom-color:var(--teal);}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.92rem;
+  }
+  thead th{
+    text-align:left;
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    color:#8a8072;
+    padding:6px 10px;
+    border-bottom:2px solid var(--line);
+  }
+  thead th.area-head{ width:42%; }
+  thead th.stage-head{ text-align:center; width:19%; }
+  tbody td{
+    border-bottom:1px solid var(--line);
+    padding:0;
+    vertical-align:middle;
+  }
+  td.area-cell{
+    padding:10px 10px;
+    font-size:.9rem;
+    line-height:1.3;
+  }
+  td.area-cell .code{
+    font-weight:700;
+    margin-right:4px;
+    color:#6b6459;
+  }
+  .section-divider td{
+    border-bottom:none;
+    padding-top:14px;
+  }
+  .section-label{
+    font-size:.72rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    color:var(--teal);
+    padding:0 10px;
+  }
+
+  .stage-cell{
+    text-align:center;
+    cursor:pointer;
+    height:46px;
+    transition:background .12s;
+  }
+  .stage-cell .mark{
+    display:inline-flex;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    align-items:center;
+    justify-content:center;
+    border:2px solid var(--line);
+    color:transparent;
+    font-size:.95rem;
+    font-weight:700;
+    transition:all .12s;
+  }
+  .stage-cell:hover .mark{ border-color:#b9ab93; }
+
+  .stage-cell.selected{ background:var(--teal-soft); }
+  .stage-cell.selected .mark{ background:var(--teal); border-color:var(--teal); color:#fff; }
+
+  .add-row{
+    max-width:1000px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .add-row button{
+    border:1.5px dashed var(--line);
+    background:transparent;
+    color:#6b6459;
+    padding:12px 20px;
+    border-radius:10px;
+    font-size:.9rem;
+    cursor:pointer;
+  }
+  .add-row button:hover{ border-color:var(--teal); color:var(--teal); }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .toolbar, .remove-btn, .add-row{ display:none !important; }
+    .child-block{ box-shadow:none; border:1px solid #ccc; page-break-after:always; margin-bottom:0; }
+    .page-head p{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="page-head">
+    <div>
+      <h1>QKLG Learning Profile</h1>
+      <p>Click a cell in Emerging / Exploring / Extending to mark progress. Use "Add another child" to duplicate the form.</p>
+    </div>
+    <div class="toolbar">
+      <button class="tool" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    </div>
+  </div>
+
+  <div id="forms-container"></div>
+
+  <div class="add-row">
+    <button onclick="addChildBlock()">+ Add another child</button>
+  </div>
+
+<template id="child-template">
+  <div class="child-block">
+    <button class="remove-btn" title="Remove this form" onclick="removeBlock(this)">✕</button>
+    <div class="name-row">
+      <label>Name:</label>
+      <input type="text" placeholder="Child's name">
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th class="area-head">QKLG area</th>
+          <th class="stage-head">Emerging</th>
+          <th class="stage-head">Exploring</th>
+          <th class="stage-head">Extending</th>
+        </tr>
+      </thead>
+      <tbody><!-- rows injected by JS --></tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+const SECTIONS = [
+  { label: "1. Identity", items: [
+    ["1.1", "Building a sense of security and trust"],
+    ["1.2", "Acting with independence and perseverance"],
+    ["1.3", "Building a confident self-identity"],
+  ]},
+  { label: "2. Connectedness", items: [
+    ["2.1", "Building positive relationships"],
+    ["2.2", "Showing respect for diversity"],
+    ["2.3", "Showing respect for environments"],
+  ]},
+  { label: "3. Wellbeing", items: [
+    ["3.1", "Building increasing autonomy and resilience"],
+    ["3.2", "Engaging with ways to be healthy and safe"],
+    ["3.3", "Building physical wellbeing"],
+  ]},
+  { label: "4. Active Learning", items: [
+    ["4.1", "Building positive dispositions towards learning"],
+    ["4.2", "Showing confidence and involvement in learning"],
+    ["4.3", "Engaging with technologies for learning and communication"],
+  ]},
+  { label: "5. Communicating", items: [
+    ["5.1", "Exploring language"],
+    ["5.2", "Exploring literacy"],
+    ["5.3", "Exploring numeracy"],
+  ]},
+];
+
+function buildRows(tbody){
+  SECTIONS.forEach((section, sIdx) => {
+    section.items.forEach(([code, text], i) => {
+      const tr = document.createElement('tr');
+      if (i === 0 && sIdx !== 0) tr.classList.add('section-divider-spacer');
+
+      const areaTd = document.createElement('td');
+      areaTd.className = 'area-cell';
+      areaTd.innerHTML = `<span class="code">${code}</span>${text}`;
+      tr.appendChild(areaTd);
+
+      ['emerging','exploring','extending'].forEach(stage => {
+        const td = document.createElement('td');
+        td.className = 'stage-cell';
+        td.dataset.stage = stage;
+        td.innerHTML = '<span class="mark">✓</span>';
+        td.addEventListener('click', () => selectStage(tr, td));
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function selectStage(row, clickedCell){
+  const wasSelected = clickedCell.classList.contains('selected');
+  row.querySelectorAll('.stage-cell').forEach(c => c.classList.remove('selected'));
+  if (!wasSelected) clickedCell.classList.add('selected');
+}
+
+function addChildBlock(){
+  const template = document.getElementById('child-template');
+  const clone = template.content.cloneNode(true);
+  const tbody = clone.querySelector('tbody');
+  buildRows(tbody);
+  document.getElementById('forms-container').appendChild(clone);
+}
+
+function removeBlock(btn){
+  const blocks = document.querySelectorAll('.child-block');
+  if (blocks.length <= 1) return; // keep at least one
+  btn.closest('.child-block').remove();
+}
+
+// start with one form
+addChildBlock();
+</script>
+
+</body>
+</html>
